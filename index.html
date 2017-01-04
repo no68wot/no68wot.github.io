@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+	<meta charset="utf-8" /> <!-- HTML5 -->
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" /> <!-- HTML 4.x -->
+	<meta http-equiv="expires" content="0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" /> 
+    <style type="text/css"></style>
+</head>
+<body>
+<!-- ==================== PAGE_WRAPPER =========================================== -->
+<div id="page_wrapper">
+  <form id="frm_viettype" name="Formular" action="">
+    <fieldset>
+      <input type="radio" id="vn" name="Auswahl" value="vietnamese">
+        <label for="vn">Vietnamese</label>
+      </input>
+      <input type="radio" id="nonvn" name="Auswahl" value="non-vietnamese" checked="checked">
+        <label for="nonvn">Non-Vietnamese</label>
+      </input>
+    </fieldset>
+    <textarea id="txtarea" name="Eingabe" cols="60" rows="10">Start writing here...</textarea>
+  </form>
+</div>
+
+<!-- REFERNCES -->
+<div>
+  <table id="tabRefs">
+   <tr>
+      <td>
+        <a href="contents/viet_unicode.html" target="_blank" style="color:red;">Soni's Vietnamese Unicode Table</a>
+      </td>
+    </tr>
+   <tr>
+      <td>
+        <a href="http://hobieuchanh.com/pages/baiviet/DungVu/DautiengViet.pdf" target="_blank" style="color:orange;">Duy Vũ (2006): <i>Vấn đề đánh dấu thăng tiếng Việt</i>, S.18</a>
+         [<a href="resources/vietnamesisch/DautiengViet.pdf" target="_blank">Mirror</a>]
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://vi.wikipedia.org/wiki/Quy_t%E1%BA%AFc_%C4%91%E1%BA%B7t_d%E1%BA%A5u_thanh_trong_ch%E1%BB%AF_qu%E1%BB%91c_ng%E1%BB%AF" target="_blank">
+        Wikipedia: <i>Quy tắc đặt dấu thanh trong chữ quốc ngữ</i></a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="http://vietunicode.sourceforge.net/charset/v3.htm" target="_blank">http://vietunicode.sourceforge.net/charset/v3.htm</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="http://www.ascii.cl/htmlcodes.htm" target="_blank">http://www.ascii.cl/htmlcodes.htm</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="http://graphemica.com/%C4%83" target="_blank">http://graphemica.com/%C4%83</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="http://www.character-code.com/" target="_blank">http://www.character-code.com/</a>
+      </td>
+    </tr>
+  </table>
+</div>
+<!-- ==================== END PAGE_WRAPPER ======================================= -->
+
+<script type="text/javascript">
+ (function () { 
+ 	var vRefs = document.querySelectorAll("table#tabRefs tr") || []; /* NodeList */
+	if ( vRefs.length === 0 ) return;
+	var ll = vRefs.length;
+	for ( var i = 0; i < ll; i++ ) {
+ 		var firstChild = vRefs[i].querySelector("td");
+		var td = document.createElement("TD");
+ 		td.appendChild(document.createTextNode("[" + (i+1) + "]"));
+		vRefs[i].insertBefore(td, firstChild);
+	}
+ })();
+</script>
+
+<script type="text/javascript">
+/**
+ * Soni D.
+ */
+ var VNKeyboard = (function () {
+	 var g = {
+		frmObj : null, /* Form object */
+		rbViet : null, /* Radio button Viet */
+		rbNoViet : null, /* Radio button No Viet */
+		txtarea : null,
+		isFocused : false, /* focus on textarea */
+		vietOn : false,
+		vietCode : { a  : ['a', 'á', 'à', 'ả', 'ã', 'ạ'],   // 0
+		             a6 : ['â', 'ấ', 'ầ', 'ẩ', 'ẫ', 'ậ'],   // 1
+		             a8 : ['ă', 'ắ', 'ằ', 'ẳ', 'ẵ', 'ặ'],   // 2 
+		             e  : ['e', 'é', 'è', 'ẻ', 'ẽ', 'ẹ'],   // 3
+		             e6 : ['ê', 'ế', 'ề', 'ể', 'ễ', 'ệ'],   // 4
+		             i  : ['i', 'í', 'ì', 'ỉ', 'ĩ', 'ị'],   // 5
+		             o  : ['o', 'ó', 'ò', 'ỏ', 'õ', 'ọ'],   // 6
+		             o6 : ['ô', 'ố', 'ồ', 'ổ', 'ỗ', 'ộ'],   // 7
+		             o7 : ['ơ', 'ớ', 'ờ', 'ở', 'ỡ', 'ợ'],   // 8
+		             u  : ['u', 'ú', 'ù', 'ủ', 'ũ', 'ụ'],   // 9
+		             u7 : ['ư', 'ứ', 'ừ', 'ử', 'ữ', 'ự'],   // 10
+		             y  : ['y', 'ý', 'ỳ', 'ỷ', 'ỹ', 'ỵ'],   // 11
+		             A  : ['A', 'Á', 'À', 'Ả', 'Ã', 'Ạ'],   // 12
+		             A6 : ['Â', 'Ấ', 'Ầ', 'Ẩ', 'Ẫ', 'Ậ'],   // 13
+		             A8 : ['Ă', 'Ắ', 'Ằ', 'Ẳ', 'Ẵ', 'Ặ'],   // 14
+		             E  : ['E', 'É', 'È', 'Ẻ', 'Ẽ', 'Ẹ'],   // 15
+		             E6 : ['Ê', 'Ế', 'Ề', 'Ể', 'Ễ', 'Ệ'],   // 16
+		             I  : ['I', 'Í', 'Ì', 'Ỉ', 'Ĩ', 'Ị'],   // 17
+		             O  : ['O', 'Ó', 'Ò', 'Ỏ', 'Õ', 'Ọ'],   // 18
+		             O6 : ['Ô', 'Ố', 'Ồ', 'Ổ', 'Ỗ', 'Ộ'],   // 19
+		             O7 : ['Ơ', 'Ớ', 'Ờ', 'Ở', 'Ỡ', 'Ợ'],   // 20
+		             U  : ['U', 'Ú', 'Ù', 'Ủ', 'Ũ', 'Ụ'],   // 21
+		             U7 : ['Ư', 'Ứ', 'Ừ', 'Ử', 'Ữ', 'Ự'],   // 22
+		             Y  : ['Y', 'Ý', 'Ỳ', 'Ỷ', 'Ỹ', 'Ỵ'],   // 23
+	 			},
+	 };
+	 return {
+		 init : function () {
+			 /* Form object */
+			  g.frmObj = document.forms[0]; // document.Formular
+			 /* Radio buttons */
+			  g.rbViet = g.frmObj.Auswahl[0];
+			  g.rbNoViet = g.frmObj.Auswahl[1];
+			 /* Textarea */
+			  g.txtarea = g.frmObj.Eingabe;
+			 /* Add formatting properties */
+			  g.txtarea.style.padding = "8px";
+			  g.txtarea.style.backgroundColor = "#fff";
+			  g.txtarea.style.font = "normal 20px 'Verdana'"; /* font-style font-size font-family */
+			  g.txtarea.style.border = "2px solid #F78181";
+			  //g.txtarea.style.boxShadow = "inset 0 0 4px 1px rgba(89,89,89,.2)";
+			  this.setStyle(g.txtarea, "boxShadow", "inset 0 0 4px 1px rgba(89,89,89,.2)");
+			  this.setStyle(g.txtarea, "borderRadius", "8px");
+			 /* Add event listeners */
+			  g.rbViet.addEventListener('click', () => { g.vietOn = true; }, false);
+			  g.rbNoViet.addEventListener('click', () => { g.vietOn = false; }, false);
+			  g.txtarea.addEventListener('click', () => {
+				  if ( !g.isFocused ) {
+					  g.txtarea.innerHTML = "";
+					  g.isFocused = true;
+				  }
+			  }, false);
+			  g.txtarea.addEventListener('keydown', ( evt ) => this.vietKeyDown( evt ), false);
+			  g.txtarea.addEventListener('keyup', ( evt ) => this.vietKeyUp( evt ), false);
+		 }, // init
+		 
+		 isIn : function ( el /* object */, vSet /* set of objects */ ) {
+			 for ( var prop in vSet ) {
+				 var arr = vSet[prop], ll = arr.length;
+				 console.log(Object.prototype.toString.call(arr));
+				 for ( var i = 0; i < ll; ++i ) {
+					 if ( el == arr[i] )
+						 return true;
+				 }
+			 }
+			 return false;
+		 }, // isIn
+		 
+		 vietKeyDown : function ( evt ) {
+			 var key = evt.key;
+			 if ( key == undefined || key === "Unidentified" ) return;
+			 var code = key.charCodeAt(0); // evt.keyCode || evt.which;
+			 if ( code >= 48 && code <= 57 ) {
+				 var txt = g.txtarea.value; // content (text) of textarea			 	
+				 var lc = txt.substr(txt.length-1,1); // last char	 			 	
+				 if ( /[a-zâăêôơư]/.test(lc) ) /* regular expression: matches every char that is letter (from a until z) or vocal with apostrophe (â,ă,ê,ô,ơ,ư) */
+				 	evt.preventDefault(); // disable (prevent) keyboardEvent for numeric character
+			 }
+		 }, // vietKeyDown
+		 
+		 vietKeyUp : function ( evt ) {
+			 var sgn, code, txt, li, lc, llc, lllc, tmp;
+			 sgn = evt.key; // current key (sign, char)
+			 if ( sgn == undefined || sgn === "Unidentified" ) return;
+			 code = sgn.charCodeAt(0);
+			 if ( code >= 48 && code <= 57 ) {
+				 txt = g.txtarea.value; // content (text) of textarea
+				 li = txt.length - 1; // last (char) index				 	
+				 lc = txt.substr(li,1); // last char
+				 if ( /[a-zâăêôơư]/.test(lc) ) { /* regular expression: matches every char that is letter (from a until z) or vocal with apostrophe (â,ă,ê,ô,ơ,ư) */
+				 	llc = ( li-1 < 0 ) ? "" : txt.substr(li-1, 1); // next to last | last last char
+				 	lllc = ( li-2 < 0 ) ? "" : txt.substr(li-2, 1); // last last last char
+				 	switch ( lc ) {
+				 		case "a": // ??a
+				 			if ( sgn == "6" ) lc = 'â';
+				 			else if ( sgn == "8" ) lc = 'ă';
+				 			else if ( sgn >= 1 && sgn <= 5 ) { // á, à, ả, ã, ạ
+				 				if ( /[iou]/.test(llc) ) { // ?a : ia, oa, ua
+				 					if ( lllc == "q" && llc == "u" || lllc == "g" && llc == "i" ) { 
+				 						// Special cases: "qu" and "gi" become "phụ âm" if there is a vocal follwing them respectively, e.g. : quá, già, AND NOT qúa, gìa 
+				 						lc = g.vietCode.a[sgn]; 
+				 					} else { // ?[iou]a : bia, bìa, hoa, hóa, mua, múa
+				 						llc = ( llc == "i" ) ? g.vietCode.i[sgn] : ( llc == "o" ) ? g.vietCode.o[sgn] : /* u */ g.vietCode.u[sgn];
+				 					}
+				 				} else { // ?a : ba, bà, la, là
+				 					lc = ( !this.isIn(llc, g.vietCode) ) ? g.vietCode.a[sgn] : lc + sgn;
+				 				}
+				 			} else {
+				 				lc += sgn;
+				 			}
+				 			break;
+				 		case "e": // ??e
+				 			if ( sgn == "6" ) lc = 'ê';
+				 			else if ( sgn >= 1 && sgn <= 5 ) { // é, è, ẻ, ẽ, ẹ
+				 				if ( llc == "o" ) { // ?e : oe, òe
+				 					llc = g.vietCode.o[sgn];
+				 				} else {
+				 					lc = g.vietCode.e[sgn];
+				 					// Special cases are also included: "qu" and "gi" become "phụ âm" if there is a vocal follwing them respectively, e.g. : què, giẻ, AND NOT qùe, gỉe 
+				 				}
+				 			} else {
+				 				lc += sgn;
+				 			}
+				 			break;
+				 		case "i": // ??i
+				 			if ( sgn >= 1 && sgn <= 5 ) { // i, í, ì, ỉ, ĩ, ị
+				 				if ( /[aoôơuư]/.test(llc) ) { // ?i : ài, ói, ùi, chuối
+				 					llc = ( llc == "a" ) ? g.vietCode.a[sgn] : ( llc == "o" ) ? g.vietCode.o[sgn] : ( llc == "u" ) ? g.vietCode.u[sgn] :
+				 						  ( llc == "ô" ) ? g.vietCode.o6[sgn] : ( llc == "ơ" ) ? g.vietCode.o7[sgn] : /* ư */ g.vietCode.u7[sgn];
+				 				} else {
+				 					lc = ( !this.isIn(llc, g.vietCode) ) ? g.vietCode.i[sgn] : lc + sgn;
+				 				}
+				 			} else {
+				 				lc += sgn;
+				 			}
+				 			break;
+				 		case "o": // ??o
+				 			if ( sgn == "6" ) lc = 'ô';
+				 			else if ( sgn == "7" ) lc = 'ơ';
+				 			else if ( sgn >= 1 && sgn <= 5 ) { // ó, ò, ỏ, õ, ọ
+				 				if ( llc == "a" || llc == "e" ) { // ?o : áo, èo
+				 					llc = ( llc == "a" ) ? g.vietCode.a[sgn] : /* e */ g.vietCode.e[sgn];
+				 				} else { 
+				 					lc = ( !this.isIn(llc, g.vietCode) ) ? g.vietCode.o[sgn] : lc + sgn;
+				 					// Special cases included : "qu" and "gi" become "phụ âm" if there is a vocal follwing them respectively, e.g. : quó, giò, AND NOT qúo, gìo
+				 				}
+				 			} else {
+				 				lc += sgn;
+				 			}
+				 			break;
+				 		case "u": // ??u
+				 			if ( sgn == "7" ) lc = 'ư';
+				 			else if ( sgn >= 1 && sgn <= 5 ) { // ú, ù, ủ, ũ, ụ
+				 				if ( llc == "a" || llc == "i" ) { // ?u : àu, íu, giù
+				 					if ( lllc == "g" && llc == "i" ) { 
+				 						// Special cases: "qu" and "gi" become "phụ âm" if there is a vocal follwing them respectively, e.g. : giù, AND NOT gìu 
+				 						lc = g.vietCode.u[sgn]; 
+				 					} else { // ?[ai]u : àu, íu
+				 						llc = ( llc == "a" ) ? g.vietCode.a[sgn] : /* i */ g.vietCode.i[sgn];
+				 					}
+				 				} else { // ?u : hú, lù, tù
+				 					lc = ( !this.isIn(llc, g.vietCode) ) ? g.vietCode.u[sgn] : lc + sgn;
+				 				}
+				 			} else {
+				 				lc += sgn;
+				 			}
+				 			break;
+				 		default: // Vocal with apostrophe (â,ă,ê,ô,ơ,ư),'y' and consonant (Konsonant bzw. Mitlaut)
+				 			/* â,ă,ê,ô,ơ,ư */
+				 			var prop = ( lc == "â" ) ? "a6" : ( lc == "ă" ) ? "a8" : ( lc == "ê" ) ? "e6" : ( lc == "ô" ) ? "o6" : ( lc == "ơ" ) ? "o7" : ( lc == "ư" ) ? "u7" : ( lc == "y" ) ? "y" : null;
+				 			if ( prop && sgn >= 1 && sgn <= 5 ) {
+				 				lc = g.vietCode[prop][sgn];
+				 			} else if ( lc == "d" && sgn == 9 ) {
+				 				lc = "đ";
+				 			} else if ( llc !== "" && llc !== " " ) { 
+				 				/* Checks the consonant (e.g. b,c,d,e,...) following a vocal (e.g. a,e,i,o,u,â,ă,ê,ô,ơ,ư,y)
+				 				 * Hat ein Wort ein Konsonant (Wortlaut) am Wortende, dann setze Zeichen (Apostroph) auf den LETZTEN Vokal im Wort.
+				 				 * => ??n: thần, thánh, trường, thắng, hoàng, quyền
+				 				 *
+				 				 * In den obigen Beispielen sind jeweils 'ơ' (trường), 'a' (hoàng), 'ê' (quyền) der LETZTE Vokal.
+				 				 * Daher wird der Apostroph entsprechend auf sie gesetzt:  ơ => ờ => trư(ờ)ng | a => à => ho(à)ng | ê => ề => quy(ề)n
+				 				 */
+				 				
+				 			} else {
+				 				lc += sgn;
+				 			}
+				 			break;
+				 	}
+				 	tmp = llc + "" + lc;
+				 	g.txtarea.value = txt.substring(0,li-1) + tmp;
+				 }
+			 }
+		 }, // vietKeyUp
+		 
+		 /* Set style property with prefix vendor */
+		 setStyle : function ( el, prop, val ) {
+			 /* callback (anonymous function) is called with 3 arguments: curElem (value of current array element), index, array */
+			 var vProp = prop.charAt(0).toUpperCase() + prop.substr(1);
+			 ["Webkit", "Moz", "ms", "O"].forEach( ( curElem, index, array ) => {
+				 el.style[curElem + vProp] = val;
+			 });
+			/* el.style["Webkit" + vProp] = val;
+			 * el.style["Moz" + vProp] = val;
+			 */
+			 el.style[prop] = val;
+		 }
+	 }
+ })();
+ 
+ document.addEventListener("DOMContentLoaded", () => {
+	 VNKeyboard.init();
+ }, false);
+</script>
+
+</body>
+</html>

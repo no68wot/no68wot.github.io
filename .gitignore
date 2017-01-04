@@ -1,0 +1,8 @@
+# generic files to ignore.
+
+# backup files to ignore.
+*.html~, *.js~, *.css~, Document~
+*.*~
+
+# except this file.
+!.gitignore
