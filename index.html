@@ -7,6 +7,7 @@
 	<meta http-equiv="expires" content="0" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" /> 
     <style type="text/css"></style>
+    <title>Vietnamese Keyboard</title>
 </head>
 <body>
 <!-- ==================== PAGE_WRAPPER =========================================== -->
@@ -142,7 +143,7 @@
 			  g.rbNoViet.addEventListener('click', () => { g.vietOn = false; }, false);
 			  g.txtarea.addEventListener('click', () => {
 				  if ( !g.isFocused ) {
-					  g.txtarea.innerHTML = "";
+					  g.txtarea.value = "";
 					  g.isFocused = true;
 				  }
 			  }, false);
@@ -162,27 +163,44 @@
 			 return false;
 		 }, // isIn
 		 
+		 getCursorPos : function () {
+			 var cursorPos; /* Integer */
+			 if ( document.selection ) { // IE older than 11
+				 console.log("Here");
+				 /* MSDN (selection): A document can have one selection at one time. Although an empty selection
+				  * contains nothing, one can use it to mark a position in the document.				  *
+				  */
+				 var oRange = document.selection.createRange();
+				 // Todo
+			 } else if ( g.txtarea.selectionStart || g.txtarea.selectionStart == 0 ) { // FF, Chrome
+				 /* If no text is selected, |selectionStart| contains the index of the character that follows the input cursor. */
+				 cursorPos = g.txtarea.selectionStart; // g.txtarea.selectionEnd
+			 }
+			 return cursorPos;
+		 }, // getCursorPos
+		 
 		 vietKeyDown : function ( evt ) {
 			 var key = evt.key;
 			 if ( key == undefined || key === "Unidentified" ) return;
 			 var code = key.charCodeAt(0); // evt.keyCode || evt.which;
 			 if ( code >= 48 && code <= 57 ) {
 				 var txt = g.txtarea.value; // content (text) of textarea			 	
-				 var lc = txt.substr(txt.length-1,1); // last char	 			 	
+				 var lc = txt.substr(this.getCursorPos()-1, 1); // last char	 			 	
 				 if ( /[a-zâăêôơư]/.test(lc) ) /* regular expression: matches every char that is letter (from a until z) or vocal with apostrophe (â,ă,ê,ô,ơ,ư) */
 				 	evt.preventDefault(); // disable (prevent) keyboardEvent for numeric character
 			 }
 		 }, // vietKeyDown
 		 
 		 vietKeyUp : function ( evt ) {
-			 var sgn, code, txt, li, lc, llc, lllc, tmp;
+			 var sgn, code, txt, cursorPos, li, lc, llc, lllc, tmp, offset = 0;
 			 sgn = evt.key; // current key (sign, char)
 			 if ( sgn == undefined || sgn === "Unidentified" ) return;
 			 code = sgn.charCodeAt(0);
 			 if ( code >= 48 && code <= 57 ) {
 				 txt = g.txtarea.value; // content (text) of textarea
-				 li = txt.length - 1; // last (char) index				 	
-				 lc = txt.substr(li,1); // last char
+				 cursorPos = this.getCursorPos();
+				 li = cursorPos - 1; // txt.length - 1; // last (char) index				 	
+				 lc = txt.substr(li,1); // last char				 
 				 if ( /[a-zâăêôơư]/.test(lc) ) { /* regular expression: matches every char that is letter (from a until z) or vocal with apostrophe (â,ă,ê,ô,ơ,ư) */
 				 	llc = ( li-1 < 0 ) ? "" : txt.substr(li-1, 1); // next to last | last last char
 				 	lllc = ( li-2 < 0 ) ? "" : txt.substr(li-2, 1); // last last last char
@@ -191,6 +209,7 @@
 				 			if ( sgn == "6" ) lc = 'â';
 				 			else if ( sgn == "8" ) lc = 'ă';
 				 			else if ( sgn >= 1 && sgn <= 5 ) { // á, à, ả, ã, ạ
+				 				this.getCursorPos();
 				 				if ( /[iou]/.test(llc) ) { // ?a : ia, oa, ua
 				 					if ( lllc == "q" && llc == "u" || lllc == "g" && llc == "i" ) { 
 				 						// Special cases: "qu" and "gi" become "phụ âm" if there is a vocal follwing them respectively, e.g. : quá, già, AND NOT qúa, gìa 
@@ -262,29 +281,39 @@
 				 			}
 				 			break;
 				 		default: // Vocal with apostrophe (â,ă,ê,ô,ơ,ư),'y' and consonant (Konsonant bzw. Mitlaut)
-				 			/* â,ă,ê,ô,ơ,ư */
+				 			/* â,ă,ê,ô,ơ,ư gn*/
 				 			var prop = ( lc == "â" ) ? "a6" : ( lc == "ă" ) ? "a8" : ( lc == "ê" ) ? "e6" : ( lc == "ô" ) ? "o6" : ( lc == "ơ" ) ? "o7" : ( lc == "ư" ) ? "u7" : ( lc == "y" ) ? "y" : null;
-				 			if ( prop && sgn >= 1 && sgn <= 5 ) {
-				 				lc = g.vietCode[prop][sgn];
+				 			if ( prop ) {
+				 				if ( sgn >= 1 && sgn <= 5 ) {
+				 					lc = g.vietCode[prop][sgn];
+				 				} else {
+				 					lc += sgn;
+				 					offset = 1;
+				 				}
 				 			} else if ( lc == "d" && sgn == 9 ) {
 				 				lc = "đ";
-				 			} else if ( llc !== "" && llc !== " " ) { 
-				 				/* Checks the consonant (e.g. b,c,d,e,...) following a vocal (e.g. a,e,i,o,u,â,ă,ê,ô,ơ,ư,y)
-				 				 * Hat ein Wort ein Konsonant (Wortlaut) am Wortende, dann setze Zeichen (Apostroph) auf den LETZTEN Vokal im Wort.
-				 				 * => ??n: thần, thánh, trường, thắng, hoàng, quyền
-				 				 *
-				 				 * In den obigen Beispielen sind jeweils 'ơ' (trường), 'a' (hoàng), 'ê' (quyền) der LETZTE Vokal.
-				 				 * Daher wird der Apostroph entsprechend auf sie gesetzt:  ơ => ờ => trư(ờ)ng | a => à => ho(à)ng | ê => ề => quy(ề)n
-				 				 */
-				 				
 				 			} else {
+				 				console.log("here");
 				 				lc += sgn;
+				 				offset = 1;
 				 			}
+				 			/* TODO:
+				 			 * Checks the consonant (e.g. b,c,d,e,...) following a vocal (e.g. a,e,i,o,u,â,ă,ê,ô,ơ,ư,y)
+			 				 * Hat ein Wort ein Konsonant (Wortlaut) am Wortende, dann setze Zeichen (Apostroph) auf den LETZTEN Vokal im Wort.
+			 				 * => ??n: thần, thánh, trường, thắng, hoàng, quyền
+			 				 *
+			 				 * In den obigen Beispielen sind jeweils 'ơ' (trường), 'a' (hoàng), 'ê' (quyền) der LETZTE Vokal.
+			 				 * Daher wird der Apostroph entsprechend auf sie gesetzt:  ơ => ờ => trư(ờ)ng | a => à => ho(à)ng | ê => ề => quy(ề)n
+			 				 */
 				 			break;
 				 	}
-				 	tmp = llc + "" + lc;
-				 	g.txtarea.value = txt.substring(0,li-1) + tmp;
+				 	tmp = txt.substring(0,li-1) + llc + lc + txt.substring(li+1, txt.length);
+				 	// Set cursor (caret) to the current position. Avoid the case that cursor springs to text end.
+				 	g.txtarea.value = txt.substring(0,li-1) + llc + lc + txt.substring(li+1, txt.length);
+				 	g.txtarea.selectionStart = tmp.length - tmp.substring(cursorPos, tmp.length).length + offset;
+				 	g.txtarea.selectionEnd = g.txtarea.selectionStart;
 				 }
+				 	
 			 }
 		 }, // vietKeyUp
 		 
@@ -303,9 +332,7 @@
 	 }
  })();
  
- document.addEventListener("DOMContentLoaded", () => {
-	 VNKeyboard.init();
- }, false);
+ document.addEventListener("DOMContentLoaded", () => VNKeyboard.init(), false);
 </script>
 
 </body>
