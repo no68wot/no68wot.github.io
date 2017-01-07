@@ -139,16 +139,18 @@
 			  this.setStyle(g.txtarea, "boxShadow", "inset 0 0 4px 1px rgba(89,89,89,.2)");
 			  this.setStyle(g.txtarea, "borderRadius", "8px");
 			 /* Add event listeners */
-			  g.rbViet.addEventListener('click', () => { g.vietOn = true; }, false);
-			  g.rbNoViet.addEventListener('click', () => { g.vietOn = false; }, false);
-			  g.txtarea.addEventListener('click', () => {
+			  g.rbViet.addEventListener('click', function () { g.vietOn = true; }, false);
+			  g.rbNoViet.addEventListener('click', function () { g.vietOn = false; }, false);
+			  g.txtarea.addEventListener('click', function () {
 				  if ( !g.isFocused ) {
 					  g.txtarea.value = "";
 					  g.isFocused = true;
 				  }
 			  }, false);
-			  g.txtarea.addEventListener('keydown', ( evt ) => this.vietKeyDown( evt ), false);
-			  g.txtarea.addEventListener('keyup', ( evt ) => this.vietKeyUp( evt ), false);
+			  //g.txtarea.addEventListener('keydown', ( evt ) => this.vietKeyDown( evt ), false);
+			  g.txtarea.addEventListener('keydown', function ( evt ) { VNKeyboard.vietKeyDown( evt ) }, false);
+			  //g.txtarea.addEventListener('keyup', ( evt ) => this.vietKeyUp( evt ), false);
+			  g.txtarea.addEventListener('keyup', function ( evt ) { VNKeyboard.vietKeyUp( evt ) }, false);
 		 }, // init
 		 
 		 isIn : function ( el /* object */, vSet /* set of objects */ ) {
@@ -326,7 +328,7 @@
 		 setStyle : function ( el, prop, val ) {
 			 /* callback (anonymous function) is called with 3 arguments: curElem (value of current array element), index, array */
 			 var vProp = prop.charAt(0).toUpperCase() + prop.substr(1);
-			 ["Webkit", "Moz", "ms", "O"].forEach( ( curElem, index, array ) => {
+			 ["Webkit", "Moz", "ms", "O"].forEach( function ( curElem, index, array ) {
 				 el.style[curElem + vProp] = val;
 			 });
 			/* el.style["Webkit" + vProp] = val;
@@ -337,7 +339,8 @@
 	 }
  })();
  
- document.addEventListener("DOMContentLoaded", () => VNKeyboard.init(), false);
+ //document.addEventListener("DOMContentLoaded", () => VNKeyboard.init(), false);
+ document.addEventListener("DOMContentLoaded", function () { VNKeyboard.init(); }, false);
 </script>
 
 </body>

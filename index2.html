@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8" /> <!-- HTML5 -->
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" /> <!-- HTML 4.x -->
+	<meta http-equiv="expires" content="0" />
+    <title>Vietnamese Keyboard</title>
+</head>
+
+<body></body>
+<script type="text/javascript">
+/**
+ * Soni D.
+ * (C) 2016-present 
+ */
+
+//===============================================================================================================================
+/**
+ * Polyfill for addEventListener which is not available in IE 6-9+
+ */
+function addEventHandler ( elem /* Object */, type /* Event type, DOMString */, handler /* Event handler */, useCapture /* Boolean */  ) {
+	if ( elem.addEventListener ) { /* FF, Chrome, IE 11, Opera, Safari */
+		elem.addEventListener(type, handler, useCapture /* false, by default */);
+	} else if ( elem.attachEvent ) { /* IE 6 until 9+ */
+		if ( type == "DOMContentLoaded" ) {
+			type = "readystatechange"; // Alternative for DOMContentLoaded which is first available since IE 9
+		}
+		elem.attachEvent("on" + type, handler);
+	} else { /* cross-browser */
+		elem["on" + type] = handler;
+		/* For example: type == "load" (the load event). 
+		 * We don't need to check the existence of 'elem.onload' using 'if ( elem.onload )' as it is null,
+		 * i.e. Object.prototype.toString.call(elem.onload) returns [object null], and expects a function (name)  
+		 * assigned to it in order to handle the event fired:
+		 * 		if ( elem.onload ) { do something } ==> this only returns false (because NULL) and won't get in the IF-body.
+		 * better:
+		 * 		elem.onload = handler;
+		 * or:
+		 *		elem["onload"] = handler;
+		 * where 'handler' is the name of a function defined somewhere in script. 
+		 */
+	}
+} // addEventHandler
+
+//===============================================================================================================================
+/**
+ * Polyfill for addEventListener which is not available in IE 6-9+
+ */
+(function (elems) {
+	for ( var i = 0; i < elems.length; i++ ) {
+		if ( typeof elems[i].addEventListener === "undefined" ) {
+			elems[i].addEventListener = function ( type /* Event type, DOMString */, handler /* Event handler */, useCapture /* Boolean */ ) {
+				if ( type == "DOMContentLoaded" ) {
+					type = "readystatechange"; // Alternative for DOMContentLoaded which is first available since IE 9
+				}
+				if ( this.attachEvent ) { /* IE 6 until 9+ */
+					this.attachEvent("on" + type, handler); /* |this| refers to elems[i] */
+				} else { /* cross-browser */
+					this["on" + type] = handler;
+				}
+			};
+		}
+	}
+})([document, window]);
+
+//===============================================================================================================================
+var g = { wrapper : null, frmObj : null, rbViet : null, rbNoViet : null, txtarea : null, isFocused : false };
+
+
+//===============================================================================================================================
+
+function vietKeyDown ( evt ) {
+	var key;
+	if ( evt.key !== undefined ) { /* Modern browsers: FF, Chrome, IE 11 */
+		key = evt.key; /* Numeric code of pressed key, e.g. |a| == 65 */
+	} else if ( evt.charCode !== undefined ) { /* IE 9 */
+		key = evt.charCode; /* Unicode character */
+	} else if ( evt.keyCode !== undefined ) { /* IE 6-8 */
+		key = evt.keyCode;
+	}
+	p.innerHTML = " pos: " + getCursorPos();
+} // vietKeyDown
+
+
+function getCursorPos () {
+	var tRng, tmp, cnt;
+	if ( document.selection ) { /* IE 6-10 */
+		g.txtarea.focus();
+		tRng = document.selection.createRange(); /* TextRange */
+		tmp = tRng.moveStart("character", -g.txtarea.value.length); /* Change the start position of selection, move to first index (0) and returns number of units moved */
+		cnt = tRng.text.length;
+	} else if ( g.txtarea.selectionStart || g.txtarea.selectionStart == 0 ) { /* IE 11 and modern browsers */
+		/* If no text is selected, |selectionStart| contains the index of the character that follows the input cursor. */
+		cnt = g.txtarea.selectionStart;
+	}
+	return cnt;
+} // getCursorPos
+
+
+//===============================================================================================================================
+	
+/* Since radio buttons created by |documen.createElement| and |appendChild| won't be clickable,
+ * so we use |document.write| instead, in order to make them clickable.
+ */
+var str = '<div id="page_wrapper" style="position:relative; width: 95%; margin: 0 auto;">'
+		+ '<form id="frm_viettype" name="Formular" style="position: relative; width: 98%;">'
+		+ '<fieldset>'
+		+ '<input type="radio" id="viet" name="Auswahl" value="vn" checked>'
+		+ '<label for="viet">Vietnamese</label>'
+		+ '</input>'
+		+ '<input type="radio" id="noviet" name="Auswahl" value="novn">'
+		+ '<label for="noviet">Non-Vietnamese</label>'
+		+ '</input>'
+		+ '</fieldset>'
+		+ '<textarea id="txtarea" name="Eingabe" rows="10" style="width: 100%; font-size: 19px;">Start writing here...</textarea>'
+		+ '</form></div>';
+		 
+document.open();
+document.write(str);
+document.close();
+
+/* Initialize */
+g.wrapper = document.getElementById("page_wrapper");
+g.frmObj = document.forms[0]; // document.getElementbyId("frm_viettype");
+g.rbViet = g.frmObj.Auswahl[0];
+g.rbNoViet = g.frmObj.Auswahl[1];
+g.txtarea = g.frmObj.Eingabe; // document.getElementById("txtarea");
+
+var p = document.createElement("P");
+document.body.appendChild(p);
+p.innerHTML = "&#224;"
+
+
+/* Add event listeners */
+addEventHandler(g.txtarea, "click", function ( e ) {
+	if ( !g.isFocused ) {
+		g.txtarea.value = "";
+		g.isFocused = true;
+	}
+}, false);
+
+addEventHandler(g.txtarea, "keydown", vietKeyDown, false);
+
+
+
+
+
+
+function browserDetect () {
+	var browserInfo = window.navigator.userAgent; /* DOMString */
+	if ( browserInfo.indexOf("MSIE 6.0") !== -1 ) {
+		addEventHandler(document, "readystatechange", handlerIE, false);
+	} else if ( browserInfo.indexOf("MSIE 7.0") !== -1 ) {
+		
+	} else if ( browserInfo.indexOf("MSIE 8.0") !== -1 ) {
+		
+	} else if ( browserInfo.indexOf("Safari") !== -1 ) {
+		
+	} else { // Firefox, Chrome
+		
+	}
+}
+
+function handlerIE () { 
+	var info = window.navigator.userAgent;
+	alert("MSIE 6.0 c:: " + info);
+
+}
+
+</script>
+</html>
