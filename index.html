@@ -7,7 +7,12 @@
   <meta http-equiv="expires" content="0" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" /> 
   <style type="text/css">
+    .fig { padding : 8px; }
+    .codeFrame, .fig { max-width: auto; border: none; box-shadow: 0 0 3px 0 gray; }
     .codeFont { font-family: Monospace; font-size: 14px; color: #9a2efe; }
+    .codeNum { border-spacing: 0; border-collapse: collapse; float: left; }
+    table.codeNum { margin: 0 12px 0 2px; color: #000; }
+    table.codeNum td { /* cellpadding="0" */ padding: 0; text-align: right; }
   </style>
   <title>Vietnamese Keyboard</title>
 </head>
@@ -15,10 +20,67 @@
 <!-- ==================== PAGE_WRAPPER =========================================== -->
 <div id="page_wrapper">
 
+
+<div class="myEntry">
+  <h3>Vietnamese Typing Font</h3>
+  <form id="frm_viettype" name="Formular" action="">
+    <fieldset>
+      <input type="radio" id="vn" name="Auswahl" value="vietnamese">
+        <label for="vn">Vietnamese</label>
+      </input>
+      <input type="radio" id="nonvn" name="Auswahl" value="non-vietnamese" checked="checked">
+        <label for="nonvn">Non-Vietnamese</label>
+      </input>
+    </fieldset>
+    <textarea id="txtarea" name="Eingabe" cols="60" rows="10">Start writing here...</textarea>
+  </form>
+  <!-- REFERNCES -->
+  <table id="tabRefs">
+   <tr>
+      <td>
+        <a href="contents/viet_unicode.html" target="_blank" style="color:red;">Soni's Vietnamese Unicode Table</a>
+      </td>
+    </tr>
+   <tr>
+      <td>
+        <a href="http://hobieuchanh.com/pages/baiviet/DungVu/DautiengViet.pdf" target="_blank" style="color:orange;">Duy Vũ (2006): <i>Vấn đề đánh dấu thăng tiếng Việt</i>, S.18</a>
+         [<a href="resources/vietnamesisch/DautiengViet.pdf" target="_blank">Mirror</a>]
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://vi.wikipedia.org/wiki/Quy_t%E1%BA%AFc_%C4%91%E1%BA%B7t_d%E1%BA%A5u_thanh_trong_ch%E1%BB%AF_qu%E1%BB%91c_ng%E1%BB%AF" target="_blank">
+        Wikipedia: <i>Quy tắc đặt dấu thanh trong chữ quốc ngữ</i></a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="http://vietunicode.sourceforge.net/charset/v3.htm" target="_blank">http://vietunicode.sourceforge.net/charset/v3.htm</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="http://www.ascii.cl/htmlcodes.htm" target="_blank">http://www.ascii.cl/htmlcodes.htm</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="http://graphemica.com/%C4%83" target="_blank">http://graphemica.com/%C4%83</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="http://www.character-code.com/" target="_blank">http://www.character-code.com/</a>
+      </td>
+    </tr>
+  </table>
+</div> <!--******** END myEntry ********-->
+
+
 <div class="myEntry">
 <h3>Java : Object Reference und Typecasting</h3>
 <p>Gegeben seien folgende 3 Klassen (A.java, B.java, Main.java):</p>
-<pre class="codeFont">
+<pre class="codeFrame codeFont">
 /* A.java */
 public class A
 {
@@ -27,7 +89,7 @@ public class A
   }</span>
 }
 </pre>
-<pre class="codeFont">
+<pre class="codeFrame codeFont">
 /* B.java */
 public class B extends A
 {
@@ -41,7 +103,7 @@ public class B extends A
   }</span>
 }
 </pre>
-<pre class="codeFont">
+<pre class="codeFrame codeFont">
 /**
  * Main.java 
  */
@@ -64,10 +126,10 @@ Original-Methode in A und überschriebene/geerbte Methode in B werden im obigen 
 <span style="color:red">rot</span> markiert.
 </p>
 <p>
-In <i>Main.java</i>, betrachte zunächst nur die Anweisung <span class="codeFont">new B()</span>.
-Diese bewirkt, dass eine Instanz (Objekt) :B der Klasse B erzeugt wird, wie folgende Abbildung
-illustriert.
-<pre class="codeFont">
+In <span style="color:green">Main.java</span>, betrachte zunächst nur die Anweisung 
+<span class="codeFont">new B()</span>. Diese bewirkt, dass eine Instanz (Objekt) :B der 
+Klasse B erzeugt wird, wie es die folgende Abbildung illustriert.
+<pre class="codeFont fig">
                                 new B();
 
   Klasse                         Objekt
@@ -76,19 +138,24 @@ illustriert.
 +---------+                    +---------+
 </pre>
 Anstelle von <span class="codeFont">instance of</span> kann der UML-Stereotyp <span class="codeFont">
-&lt;&lt;instance&gt;&gt;</span> verwendet werden. Dann zeigt ein Pointer (Referenz) b vom Typ B auf 
-das erzeugte Objekt :B.
-<pre class="codeFont">
+&lt;&lt;instance&gt;&gt;</span> verwendet werden.<br />
+<br />
+Dann wird durch die Zuweisung <span class="codeFont">B b = new B()</span> das erzeugte Objekt :B der
+Variable b zugewiesen. Die Variable b hat den Typ B und ist ein Pointer (Zeiger, Referenz) auf 
+Objekt :B.
+<pre class="codeFont fig">
                                            B b = new B();
-
   Klasse                         Objekt
 +---------+    instance of     +---------+                 
 |    B    |<-------------------|   :B    |<-------------- b
 +---------+                    +---------+
 </pre>
-Ein weiteres Pointer a vom Typ A zeigt ebenfalls auf Objekt :B. (a zeigt auf das, was b auch zeigt).
-An dem erzeugten Objekt :B kann i.d.R. nichts mehr geändert werden.
-<pre class="codeFont">
+Mit der Anweisung <span class="codeFont">A a = b</span> wird die Referenz von b der Variable a 
+zugewiesen. Die Referenz von b ist das Objekt :B. Die Variable a ist ein Pointer vom Typ A und 
+zeigt nun durch die o.g. Zuweisung ebenfalls auf Objekt :B. Also a zeigt auf das, was b auch 
+zeigt. Die folgende Abbildung illustriert diesen Sachverhalt. Außerdem kann i.d.R. an dem 
+erzeugten Objekt :B nichts mehr geändert werden.
+<pre class="codeFont fig">
                                            B b = new B();
                                            A a = b = new B()
   Klasse                         Objekt
@@ -106,7 +173,7 @@ Außerdem zeigt a (trotz Typs A) nur auf Objekt :B (Typ B). Deshalb kann a nicht
 Methode <span class="codeFont">print(A a)</span> in B aufrufen. (Die andere Methode 
 <span class="codeFont">print(B b)</span> kommt für a <b>nicht</b> infrage, denn sie ist eigene 
 Methode von B, und nicht von A).
-<pre class="codeFont">
+<pre class="codeFont fig">
     Klasse
 +------------+
 |     A      |
@@ -173,73 +240,15 @@ b.print(b) ==> b.print(b : B) ==> b.print(B b) ==> "print(b) in B"
                                     (in B)
 </pre>
 </p>
-</div>
+</div> <!--******** END myEntry ********-->
 
-
-<div>
-  <h3>Vietnamese Typing Font</h3>
-  <form id="frm_viettype" name="Formular" action="">
-    <fieldset>
-      <input type="radio" id="vn" name="Auswahl" value="vietnamese">
-        <label for="vn">Vietnamese</label>
-      </input>
-      <input type="radio" id="nonvn" name="Auswahl" value="non-vietnamese" checked="checked">
-        <label for="nonvn">Non-Vietnamese</label>
-      </input>
-    </fieldset>
-    <textarea id="txtarea" name="Eingabe" cols="60" rows="10">Start writing here...</textarea>
-  </form>
-</div>
-
-<!-- REFERNCES -->
-<div>
-  <table id="tabRefs">
-   <tr>
-      <td>
-        <a href="contents/viet_unicode.html" target="_blank" style="color:red;">Soni's Vietnamese Unicode Table</a>
-      </td>
-    </tr>
-   <tr>
-      <td>
-        <a href="http://hobieuchanh.com/pages/baiviet/DungVu/DautiengViet.pdf" target="_blank" style="color:orange;">Duy Vũ (2006): <i>Vấn đề đánh dấu thăng tiếng Việt</i>, S.18</a>
-         [<a href="resources/vietnamesisch/DautiengViet.pdf" target="_blank">Mirror</a>]
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="https://vi.wikipedia.org/wiki/Quy_t%E1%BA%AFc_%C4%91%E1%BA%B7t_d%E1%BA%A5u_thanh_trong_ch%E1%BB%AF_qu%E1%BB%91c_ng%E1%BB%AF" target="_blank">
-        Wikipedia: <i>Quy tắc đặt dấu thanh trong chữ quốc ngữ</i></a>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="http://vietunicode.sourceforge.net/charset/v3.htm" target="_blank">http://vietunicode.sourceforge.net/charset/v3.htm</a>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="http://www.ascii.cl/htmlcodes.htm" target="_blank">http://www.ascii.cl/htmlcodes.htm</a>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="http://graphemica.com/%C4%83" target="_blank">http://graphemica.com/%C4%83</a>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href="http://www.character-code.com/" target="_blank">http://www.character-code.com/</a>
-      </td>
-    </tr>
-  </table>
-</div>
 
 </div>
 <!-- ==================== END PAGE_WRAPPER ======================================= -->
 
 <script type="text/javascript">
  (function () { 
-	/* Formatting references */
+	/** Formatting references ************************************/
  	var vArr = document.querySelectorAll("table#tabRefs tr") || []; /* NodeList */
 	if ( vArr.length === 0 ) return;
 	var ll = vArr.length;
@@ -250,12 +259,29 @@ b.print(b) ==> b.print(b : B) ==> b.print(B b) ==> "print(b) in B"
 		vArr[i].insertBefore(td, firstChild);
 	}
 
-	/* Formatting comments in code sections */
-	var vArr = document.querySelectorAll("pre.codeFont") || []; /* NodeList */
+	/** Formatting comments in code sections *********************/
+	var vArr = document.querySelectorAll("pre.codeFrame") || []; /* NodeList */
 	if ( vArr.length === 0 ) return;
-	var ll = vArr.length;
+	var ll = vArr.length; // Number of all existing <pre> containers.
+	var nLines = 0; // Number of lines in every <pre> container.
+	var parentNode = vArr[0].parentNode; // Get reference to parent node.
+	// Iterates the number of <pre> containers
 	for ( var i = 0; i < ll; i++ ) {
 	  var strCode = vArr[i].innerHTML;
+	  // Count the number of line feeds.
+	  nLines = strCode.split(/\r\n|\r|\n/g).length;
+	  if ( nLines > 0 ) {
+	    var tab = document.createElement("TABLE");
+	    for ( var j = 1; j < nLines; j++ ) {
+	      var tr = document.createElement("TR");
+	      var td = document.createElement("TD");
+	      td.appendChild(document.createTextNode(j + "|"));
+	      tr.appendChild(td);
+	      tab.appendChild(tr);
+	    }
+	    tab.setAttribute("class", "codeNum codeFont");
+	    parentNode.insertBefore(tab, vArr[i]);
+	  }
 	  // Regular expression for code comments. Supports: /* */ and //
 	  var strReg = "\/(\\*)[ ]*.*[ ]*(\\*)+\/" // Comment in the kind of /*..*/
 	             + "|\/\/[ ]*.*[\n\r]" // Comment in the kind of: //
