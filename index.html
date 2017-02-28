@@ -9,7 +9,7 @@
   <style type="text/css">
     html { margin: 0; padding: 0; }
     body { margin: 0; padding: 0 2px; }
-    .myEntry { width: 100%; }
+    .myEntry { width: 100%; margin-bottom: 60px; }
     .myEntry h3 { max-width: 100%; padding: 8px 12px; background-color: #F241B4; color: #fff; font-weight: 800; border-radius: 8px; box-shadow: 0 6px 8px -1px rgba(0,0,0,.9);}
     .fig { padding : 8px; }
     .codeFrame, .fig { max-width: 100%; border: none; box-shadow: 0 0 3px 0 gray; }
@@ -18,8 +18,8 @@
     .codeNum { border-spacing: 0; border-collapse: collapse; float: left; }
     table.codeNum { margin: 0 4px 0 2px; color: #000; background-color: #F2F2F2; }
     table.codeNum td { /* cellpadding="0" */ padding: 0; text-align: right; }
-    .keyword { padding: 3px 12px; font-family: monospace; font-size: 15px; font-weight: 800; color: #fff; background-color: #3FE142; border-radius: 3px; box-shadow: -3px -4px 0 1px rgba(50,50,50,.8); text-shadow: 0 2px 0 rgba(0,0,0,1); }
-    table#tab5gAbbr { border-collapse: collapse; }
+    .keyword { padding: 3px 12px 2px 12px; font-family: monospace; font-size: 15px; font-weight: 800; color: #fff; background-color: #3FE142; border-radius: 3px; box-shadow: -3px -4px 0 1px rgba(50,50,50,.8); text-shadow: 0 2px 0 rgba(0,0,0,1); }
+    table#tab5gAbbr { border-collapse: collapse; max-width: 50%;}
     table#tab5gAbbr tr td { padding : 5px; border: 1px solid #000; }
     table#tab5gAbbr tr td:first-child { font-weight: 600; }
   </style>
@@ -99,12 +99,15 @@
   <p><span class="keyword">WRC 2019</span> diskutiert u. identifiziert zusätzliche Frequenzbänder.</p>
   <p><span class="keyword">IEEE</span> mm-wave wireless communication, outdoor- and indoor scenarios: <span style="color:red;">28, 38, 60 and 72-73 GHz</span> bands (Wiki 5G [42][43]).
   </p>
-  <p><span class="keyword">Frequency Proposal</span>
+  <p><span class="keyword">Frequency Proposal (IMT-2020 / 5G)</span>
     <ul>
       <li>Germany :</li>
       <li>Japan :</li>
       <li>U.S. : 27.5-29.5 GHz, 37-40.5 GHz, 47.2-50.2 GHz, 50.4-52.6 GHz and 59.3-71 GHz <sup>[3]</sup></li>
     </ul>
+  </p>
+  <p><span class="keyword">IMT-2020 (and beyond)</span> Requirements (criteria and standard specifications) of ITU-R for the wireless mobile telecommunication systems in 5th generation (5G). The target date for standardization of IMT-2020 (5G) is set for 2020 <sup>[9]</sup>.
+    <img src="resources/media/img/IMT-2020-Timeplan.png" />
   </p>
 </div>
 <div style="padding:6px;">
@@ -114,7 +117,7 @@
     <span style="font-weight:600;">Higher-Frequency bands</span> (likely) band above <span style="color:red;">6 GHz</span>. Spectrum bands <a href="http://dict.leo.org/englisch-deutsch/propose" target="_blank">proposed</a> by the U.S. for consideration at WRC-19 include: <span style="color:red;">27.5-29.5 GHz, 37-40.5 GHz, 47.2-50.2 GHz, 50.4-52.6 GHz</span> and <span style="color:red;">59.3-71 GHz</span>  &rarr; Goal: maximal use of higher-frequency bands in the U.S. by a wide variety of providers.<sup>[3]</sup>
   </p>
 </div>
-<h4>Abbreviations:</h4>
+<h4 style="margin-top:500px;">Abbreviations:</h4>
 <table id="tab5gAbbr">
   <tr><td>ASE</td><td>Advanced Semiconductor Engineering</td></tr>
   <tr><td>CapEx</td><td>Capital Expense(s)</td></tr>
@@ -123,8 +126,10 @@
   <tr><td>D2D</td><td>(Direct) Device-To-Device Communication</td></tr>
   <tr><td>FCC</td><td>U.S. Federal Communications Commission</td></tr>
   <tr><td>IMT</td><td>International Mobile Telecommunications</td></tr>
+  <tr><td>IMT-2000</td><td>Requirements of ITU-R for 3G wireless mobile telecommunication systems. IMT-2000 is widely refered to as 3G <sup>[7]</sup>. Standards which meet those requirements are UMTS, CDMA2000, UWC-136. <sup>[5]</sup></td></tr>
+  <tr><td>IMT Advanced</td><td>Requirements (Specifications) of ITU-R for 4G wireless mobile telecommunication systems. Standard meeting criteria and specifications for IMT-Advanced is LTE-Advanced (3GPP Release 10) <sup>[5][8]</sup>. <i>Note: only LTE-Advanced is widely refered to as the 4G standard and not LTE, as LTE does not reach all criteria of IMT-Advanced and remains a 3G standard (3GPP Release 9)</i>. <sup>[6]</sup></td></tr>
   <tr><td>ITU</td><td>International Telecommunication Union</td></tr>
-  <tr><td>ITU-R</td><td>International Telecommunication Union - Radio Sector</td></tr>
+  <tr><td>ITU-R</td><td>International Telecommunication Union - Radiocommunication Sector</td></tr>
   <tr><td>IoT</td><td>Internet of things</td></tr>
   <tr><td>Li-Fi</td><td>A portmanteau of <i>Light</i> and <i>Wi-Fi</i></td></tr>
   <tr><td>MANET</td><td>Mobile Ad-hoc Network</td></tr>
@@ -137,15 +142,26 @@
   <tr><td>SP</td><td>Service Provider</td></tr>
   <tr><td>VFDM</td><td>Vandermonde-subspace Frequency Division Multiplexing</td></tr>
   <tr><td>WMN</td><td>Wireless Mesh Networks</td></tr>
+  <tr><td>WP 5D</td><td>Working Party 5D; responsible for the overall radio system aspects of
+      IMT systems, comprising the IMT-2000, IMT-Advanced and IMT-2020 and beyond. <sup>[4]</sup></td>
+  </tr>
   <tr><td>WRC</td><td>World Radiocommunication Conference</td></tr>
   <tr><td>WWWW</td><td>Worldwide Wireless Web</td></tr>
   <tr><td></td><td></td></tr>
 </table>
+<br />
 <!-- REFERNCES -->
 <table id="tabRefs">
   <tr><td>Wikipedia. "<a href="https://en.wikipedia.org/wiki/5G" target="_blank">5G</a>"</td></tr>
   <tr><td>Mike Snider, USA TODAY. "<a href="http://www.usatoday.com/story/tech/news/2016/07/14/fcc-approves-spectrum-5g-advances/87081242/" target="_blank">FCC approves spectrum for 5G advances</a>". On July 14, 2016</td></tr>
   <tr><td>Tom Wheeler (FCC Chairman), Federal Communications Commission. "<a href="https://www.fcc.gov/news-events/blog/2015/08/03/leading-towards-next-generation-5g-mobile-services" target="_blank">Leading towards Next Generation "5G" Mobile Services</a>". On August 3, 2015</td></tr>
+  <tr><td>WP 5D, ITU. "<a href="https://www.itu.int/en/ITU-R/study-groups/rsg5/rwp5d/Pages/default.aspx" target="_blank">Working Party 5D (WP 5D) - IMT Systems</a>"</td></tr>
+  <tr><td>Wikipedia. "<a href="https://de.wikipedia.org/wiki/IMT-2000" target="_blank">IMT-2000</a>"</td></tr>
+  <tr><td>Wikipedia. "<a href="https://en.wikipedia.org/wiki/LTE_(telecommunication)" target="_blank">LTE</a>"</td></tr>
+  <tr><td>ITU-R. "<a href="https://www.itu.int/en/ITU-R/Documents/ITU-R-FAQ-IMT.pdf" target="_blank">ITU-R FAQ on International Mobile Telecommunications (IMT)</a>"; Question: Is IMT-2000 3G or 4G ?</td></tr>
+  <tr><td>ITU-R. "<a href="https://www.itu.int/en/ITU-R/Documents/ITU-R-FAQ-IMT.pdf" target="_blank">ITU-R FAQ on International Mobile Telecommunications (IMT)</a>"; Question: Which technologies meet the IMT-Advanced criteria and specification ?</td></tr>	
+  <tr><td>ITU towards "IMT for 2020 and beyond", IMT-2020. <a href="https://www.itu.int/en/ITU-R/study-groups/rsg5/rwp5d/imt-2020/Pages/default.aspx" target="_blank">Futuristic mobile technologies foresee "IMT for 2020 and beyond"</a></td></tr>
+  <tr><td>. "<a href="" target="_blank"></a>"</td></tr>
 </table>
 </div> <!--******** END myEntry ********-->
 
