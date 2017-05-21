@@ -12,6 +12,7 @@
     .myEntry { width: 100%; margin-bottom: 60px; }
     .myEntry h3 { max-width: 100%; padding: 8px 12px; background-color: #F241B4; color: #fff; font-weight: 800; border-radius: 8px; box-shadow: 0 6px 8px -1px rgba(0,0,0,.9);}
     .fig { padding : 8px; }
+    table.tabRefs td { vertical-align : top; }
     .codeFrame, .fig { max-width: 100%; border: none; box-shadow: 0 0 3px 0 gray; }
     .codeFrame { background-color: #F5F6CE; }
     .codeFont { font-family: Monospace; font-size: 14px; color: #9a2efe; }
@@ -44,7 +45,7 @@
     <textarea id="txtarea" name="Eingabe" rows="10" style="max-width:100%;">Start writing here...</textarea>
   </form>
   <!-- REFERNCES -->
-  <table id="tabRefs">
+  <table class="tabRefs">
    <tr>
       <td>
         <a href="contents/viet_unicode.html" target="_blank" style="color:red;">Soni's Vietnamese Unicode Table</a>
@@ -83,6 +84,242 @@
       </td>
     </tr>
   </table>
+</div> <!--******** END myEntry ********-->
+
+
+<!--********************* ENTRY ************************************-->
+<div class="myEntry">
+<h3>HTML Skeleton</h3>
+<textarea id="txtHTMLSkelet" rows="13" style="width:60%;">
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+  <meta charset="utf-8" /> <!-- HTML5 -->
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" /> <!-- HTML 4.x -->
+  <meta http-equiv="expires" content="0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" /> 
+  <style type="text/css"></style>
+  <title></title>
+<body>
+</body>
+</html>
+</textarea>
+<button type="button" onclick="markText('txtHTMLSkelet')">Mark & Copy</button>
+</div> <!--******** END myEntry ********-->
+
+
+<!--********************* ENTRY ************************************-->
+<div class="myEntry">
+<h3>Oracle VirtualBox - How to remove ?</h3>
+Auflisten aller VirtualBox-Pakete: 
+<pre>dpkg -l | grep virtualbox</pre>
+Entfernen aller VirtualBox-Pakete (die mit <code>virtualbox-</code> beginnen):
+<pre>sudo apt-get remove virtualbox-\*</pre>
+oder:
+<pre>sudo apt-get purge virtualbox-\*</pre>
+oder (komplett):
+<pre>sudo apt-get remove virtualbox*</pre>
+<pre>sudo apt-get purge virtualbox*</pre>
+wobei <code>virtualbox-\*</code> bedeutet alle Matches, die den Term 
+<code>virtualbox</code> enthalten. Das Backslash (\) bewirkt das Escape von Wilcards.
+Ausf&uuml;hrliche Erkl&auml;rung f&uuml;r Backslash (\) mit Stern (*) findet sich unter: 
+<a href="https://askubuntu.com/questions/190004/how-to-uninstall-virtualbox-in-12-04/190053#190053" target="_blank">
+https://askubuntu.com/questions/190004/how-to-uninstall-virtualbox-in-12-04/190053#190053
+</a>
+</div> <!--******** END myEntry ********-->
+
+
+<!--********************* ENTRY ************************************-->
+<div class="myEntry">
+<h3>Oracle VirtualBox - How to install (Ubuntu 16.04 Xenial) ?</h3>
+Mit <code>uname</code> werden Systeminformationen (Kernel, Prozessor, 
+Netzwerkname etc.) ausgegeben.<p></p>
+Linux-Kernel herausfinden:
+<pre><span style="color:red">uname -r</span>
+4.4.0-78-generic
+</pre>
+32bit- oder 64bit-Betriebssystem:
+<pre><span style="color:red">uname -p</span>
+x86_64
+</pre>
+oder:
+<pre><span style="color:red">uname -m</span>
+x86_64
+</pre>
+oder:
+<pre><span style="color:red">uname -i</span>
+x86_64
+</pre>
+&rarr; Das ist ein 64bit-Betriebssystem, wegen "_64".<p></p>
+Distribution-Version ermitteln:
+<pre><span style="color:red">cat /etc/lsb-release</span>
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=16.04
+DISTRIB_CODENAME=xenial
+DISTRIB_DESCRIPTION="Ubuntu 16.04.2 LTS"
+</pre>
+&rarr; Linux-Version ist Ubuntu 16.04 (Xenial)
+<p>Ubuntu ist eine Debian-basierte Linux-Distribution.</p>
+&Ouml;ffne die Datei /etc/apt/sources.list :
+<pre><span style="color:red">sudo gedit /etc/apt/sources.list</span></pre>
+F&uuml;ge die folgende Zeile in die Datei ein:
+<pre><span style="color:red">deb http://download.virtualbox.org/virtualbox/debian xenial contrib</span></pre>
+F&uuml;r andere Distributionen, ersetze <code>xenial</code> durch <code>yakkety</code>,
+<code>vivid</code>, <code>utopic</code>, <code>trusty</code>, <code>raring</code>,
+<code>quantal</code>, <code>precise</code>, <code>lucid</code>, <code>jessie</code>,
+<code>wheezy</code> oder <code>squeeze</code>
+<p></p>
+Oracle-Public-Key f&uuml;r apt-secure herunterladen:<br />
+- Ubuntu 16.04 (Xenial) und neuer: <a href="https://www.virtualbox.org/download/oracle_vbox_2016.asc">oracle_vbox_2016.asc</a><p></p>
+Diesen Schl&uuml;ssel (Public-Key) registrieren:
+<pre><span style="color:red">sudo apt-key add oracle_vbox_2016.asc</span></pre>
+oder kombiniere Herunterladen und Registrieren des Public-Keys:
+<pre><span style="color:red">wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -</span></pre>
+Fingerprint f&uuml;r <code>oracle_vbox_2016.asc</code> ist:
+<pre><span style="color:red">B9F8 D658 297A F3EF C18D  5CDF A2F6 83C5 2980 AECF
+Oracle Corporation (VirtualBox archive signing key) <info@virtualbox.org></span></pre>
+System zuerst updaten:
+<pre><span style="color:red">sudo apt-get update</span></pre>
+Installiere die <b>dkms</b>-Pakete f&uuml;r Virtual-Host-Kernel-Module (<code>vboxdrv,
+vboxnetflt, vboxnetadp</code>):
+<pre><span style="color:red">sudo apt-get install dkms</span></pre>
+System noch mal updaten:
+<pre><span style="color:red">sudo apt-get update</span></pre>
+VirtualBox 5.1 installieren:
+<pre><span style="color:red">sudo apt-get update
+sudo apt-get install virtualbox-5.1
+</span></pre>
+<span style="font-weight:800;">Fehlerbehandlung :</span>
+Wenn es Problem bei der Installation oder beim Starten von VirtualBox gibt, z.B.
+<span style="color:red">Kernel driver not installed (rc=-1908)</span><br />
+<img src="resources/media/img/vbox_error_rc1908.png" alt="" /><br />
+kann man es durch eine der folgenden Methoden beheben:
+<ol type="I">
+<li>Als root ausf&uuml;hren: <code>sudo /sbin/vboxconfig</code></li>
+<li>Falls Methode I nichts bringt, liegt das Problem h&ouml;chstwahrscheinlich an 
+UEFI-<span style="color:red;">Secure-Boot</span>. Mit dem Befehl <code>lsmod | grep vboxdrv</code>
+kann &uuml;berpr&uuml;ft werden, ob die VirtualBox-Module (<code>vboxdrv, vboxnetflt, vboxnetadp</code>)
+erfolgreich geladen werden. (Befehl <code>lsmod</code> listet Informationen &uuml;ber Modulen in Linux-
+Kernel auf). Falls durch <code>lsmod | grep vboxdrv</code> nichts auf der Konsole angezeigt werden, 
+liegt es nahe, dass die o.g. Module wegen <span style="color:red;">aktivem Secure-Boot</span> nicht 
+geladen werden k&ouml;nnen und einen Start von VirtualBox hindert.
+  <ol type="1">
+    <li>Entweder deaktiviert man das Secure-Boot, indem man im BIOS die Option UEFI-<span style="color:red">
+        Secure-Boot</span> auf <span style="color:red;">Disable</span> setzt. Danach soll VirtualBox problemlos
+        laufen k&ouml;nnen.
+    </li>
+    <li>Oder man signiert die notwendigen Module (<code>vboxdrv, vboxnetflt, vboxnetadp</code>) jeweils mit dem
+        X.509 Schl&uuml;ssel - ohne EFI-Secure-Boot zu deaktivieren.<p></p>
+        Man f&uuml;hrt <code>/sbin/vboxconfig</code> als Root aus, um den Setup-Prozess zu wiederholen:
+        <pre><span style="color:red">sudo /sbin/vboxconfig</span>
+        vboxdrv.sh: Stopping VirtualBox services.
+        vboxdrv.sh: Building VirtualBox kernel modules.
+        vboxdrv.sh: Starting VirtualBox services.
+        vboxdrv.sh: Building VirtualBox kernel modules.
+        vboxdrv.sh: failed: modprobe vboxdrv failed. Please use 'dmesg' to find out why.<br />
+        There were problems setting up VirtualBox.  To re-start the set-up process, run 
+        /sbin/vboxconfig as root.
+        </pre>
+        In der vorletzten Zeile der Ausgabe "<code>vboxdrv.sh: failed: modprobe vboxdrv failed. 
+        Please use 'dmesg' to find out why</code>" wird auf '<code>dmesg</code>' bzw.
+        '<code>modprobe vboxdrv</code>' hingedeutet.<p></p>
+        Mit <code>dmesg</code> kann man Kernel-Ring-Puffer anzeigen lassen oder kontrollieren.
+        Aber jede Ausf&uuml;hrung von <code>dmesg</code> liefert viele lange Ausgaben, die teilweise
+        un&uuml;bersichtlich sind und der L&ouml;sung nicht viel beitr&auml;gt. Stattdessen wird
+        der Befehl <code>modprobe vboxdrv</code> in Betracht gezogen. Der Befehl <code>modprobe</code>
+        wird verwendet, um ein l&auml;dbares Kernel-Modul (LKM, loadable kernel module) in Linux-Kernel
+        hinzuf&uuml;gen oder ein LKM aus dem Linux-Kernel zu entfernen.<p></p> 
+        Ausf&uuml;hrung von <code>modprobe vboxdrv</code> als Root liefert:
+        <pre><span style="color:red">sudo modprobe -v vboxdrv</span>
+        insmod /lib/modules/4.4.0-78-generic/misc/vboxdrv.ko 
+        modprobe: ERROR: could not insert 'vboxdrv': Required key not available
+        </pre>
+        Die Ausgabe <code>Required key not available</code> bedeutet, dass der notwendige Schl&uml;ssel
+        (hier X.509) fehlt, das Modul '<code>vboxdrv</code>' nicht signiert ist und deswegen nicht
+        geladen werden kann [4]. Die L&ouml;sung besteht einen X.509-Schl&uuml;ssel zu erzeugen und damit 
+        das Modul '<code>vboxdrv</code>' zu signieren [1][4].<p></p>
+        Erzeugen des Private/Public-Schl&uuml;sselpaars (X.509) mit OpenSSL:
+        <pre>openssl [command] [command-options] [command-arguments]
+          req : PKCS#10 X.509 Certificate Signing Request (CSR)	Management
+                PKCS = Public Key Cryptography Standard
+                Jedes Mal wenn ein neues Zertifikat beantragt (benötigt) wird, wird auch ein neuer CSR 
+                erstellt. Der CSR ist quasi ein Antrag für ein neues Zertifikat. Für die Erstellung
+                von CSR wird ein privater Schl&uuml;ssel (Private Key) ben&ouml;tigt. Jeder neuer
+                CSR muss von einer CA (Certificate Authority) oder Selft-Signed signiert werden [5].
+          req -new   : Diese Option erstellt ein neues CSR, also einen Antrag f&uuml;r ein neues Zertifikat. 
+          req -nodes : Diese Option bedeutet nicht den <i>englischen Knoten (node)</i>, sondern eher <i>no DES</i>,
+                       also <i>kein DES</i> (Data Ecryption Standard). Bei der Angabe der Option <code>-nodes</code> wird
+                       OpenSSL den Private-Key nicht kodieren unter Format PKCS#12 (.p12, .pfx, X.509) [7].
+          openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -nodes -days 36500 -subj "/CN=Descriptive name/"
+        </pre>
+    </li>
+  </ol>
+</li>
+</ol>
+<p></p>
+<!-- REFERNCES -->
+<table class="tabRefs">
+<tr>
+<td><a href="https://www.virtualbox.org/wiki/Linux_Downloads" target="_blank">https://www.virtualbox.org/wiki/Linux_Downloads</a></td>
+</tr>
+<tr>
+<td><a href="https://askubuntu.com/questions/760671/could-not-load-vboxdrv-after-upgrade-to-ubuntu-16-04-and-i-want-to-keep-secur" target="_blank">https://askubuntu.com/questions/760671/could-not-load-vboxdrv-after-upgrade-to-ubuntu-16-04-and-i-want-to-keep-secur</a></td>
+</tr>
+<td><a href="https://github.com/Canonical-kernel/Ubuntu-kernel/blob/master/Documentation/module-signing.txt" target="_blank">https://github.com/Canonical-kernel/Ubuntu-kernel/blob/master/Documentation/module-signing.txt</a></td>
+</tr>
+<td><a href="https://gorka.eguileor.com/vbox-vmware-in-secureboot-linux/" target="_blank">https://gorka.eguileor.com/vbox-vmware-in-secureboot-linux/</a></td>
+</tr>
+<tr>
+<td><a href="https://www.adfinis-sygroup.ch/blog/de/openssl-x509-certificates/" target="_blank">https://www.adfinis-sygroup.ch/blog/de/openssl-x509-certificates/</a></td>
+</tr>
+<tr>
+<td>OpenSSL Cookbook<br /><a href="https://www.feistyduck.com/library/openssl%2dcookbook/online/index.html" target="_blank">https://www.feistyduck.com/library/openssl%2dcookbook/online/index.html</a></td>
+</tr>
+<tr>
+<td>OpenSSL - Option -nodes<br /><a href="http://stackoverflow.com/questions/5051655/what-is-the-purpose-of-the-nodes-argument-in-openssl" target="_blank">http://stackoverflow.com/questions/5051655/what-is-the-purpose-of-the-nodes-argument-in-openssl</a></td>
+</tr>
+</table>
+</div> <!--******** END myEntry ********-->
+
+
+<!--********************* ENTRY ************************************-->
+<div class="myEntry">
+<h3>Formatter Bibliography</h3>
+
+For a long time now, I wish an easy way to get my links (in plaintext form) automatically formatted
+as hyperlinks (i.e. blue-colored and unterlined).<br />
+For example, if I just write the hyperlink 
+<code>www.myHyperlink.com</code>, it should be automatically formatted as 
+<code><a href="www.myHyperlink.com">www.myHyperlink.com</a></code>.<br />
+Furthermore, if there are more than one hyperlinks, e.g.
+<p><code>
+www.myHyperlink01.com<br />
+www.myHyperlink02.com<br />
+www.myHyperlink03.com
+</code></p>
+they should be formatted and numbered consecutively, like
+<p><code>
+[1] <a href="#">www.myHyperlink01.com</a><br />
+[2] <a href="#">www.myHyperlink02.com</a><br />
+[3] <a href="#">www.myHyperlink03.com</a>
+</code></p>
+For this purpose, I use a HTML-&lt;table&gt; with separated rows (&lt;tr&gt;) for the hyperlinks.
+Each row has only one cell/column (&lt;td&gt;). Each hyperlink is inserted into one cell.
+The table gets a class-attribute with value "tabBib".
+<p><pre>
+<span style="color:green;">&lt;table class="tabBib"&gt;</span>
+ <span style="color:green;">&lt;tr&gt;</span>
+   <span style="color:green;">&lt;td&gt;</span>&lt;a href="www.myHyperlink01.com"&gt;www.myHyperlink01.com&lt;/a&gt;<span style="color:green;">&lt;/td&gt;</span>
+ <span style="color:green;">&lt;/tr&gt;</span>
+ <span style="color:green;">&lt;tr&gt;</span>
+   <span style="color:green;">&lt;td&gt;</span>&lt;a href="www.myHyperlink02.com"&gt;www.myHyperlink02.com&lt;/a&gt;<span style="color:green;">&lt;/td&gt;</span>
+ <span style="color:green;">&lt;/tr&gt;</span>
+ <span style="color:green;">&lt;tr&gt;</span>
+   <span style="color:green;">&lt;td&gt;</span>&lt;a href="www.myHyperlink03.com"&gt;www.myHyperlink03.com&lt;/a&gt;<span style="color:green;">&lt;/td&gt;</span>
+ <span style="color:green;">&lt;/tr&gt;</span>
+<span style="color:green;">&lt;/table&gt;</span>
+</pre></p>
 </div> <!--******** END myEntry ********-->
 
 
@@ -332,14 +569,13 @@ b.print(b) ==> b.print(b : B) ==> b.print(B b) ==> "print(b) in B"
 </p>
 </div> <!--******** END myEntry ********-->
 
-
 </div>
 <!-- ==================== END PAGE_WRAPPER ======================================= -->
 
 <script type="text/javascript">
  (function () { 
 	/** Formatting references ************************************/
-	var vTabs = document.querySelectorAll("table#tabRefs") || []; /* NodeList */
+	var vTabs = document.querySelectorAll("table.tabRefs") || []; /* NodeList */
 	if ( vTabs.length === 0 ) return;
 	var vArr = null;
 	for ( var k = 0; k < vTabs.length; k++ ) {
@@ -354,7 +590,7 @@ b.print(b) ==> b.print(b : B) ==> b.print(B b) ==> "print(b) in B"
 	  }
 	}
 	/** Formatting comments in code sections *********************/
-	var vArr = document.querySelectorAll("pre.codeFrame") || []; /* NodeList */
+	vArr = document.querySelectorAll("pre.codeFrame") || []; /* NodeList */
 	if ( vArr.length === 0 ) return;
 	var ll = vArr.length; // Number of all existing <pre> containers.
 	var nLines = 0; // Number of lines in every <pre> container.
@@ -389,6 +625,28 @@ b.print(b) ==> b.print(b : B) ==> b.print(B b) ==> "print(b) in B"
 	/** Release references and unused variables ******************/
 	vTabs = vArr = parentNode = null;
  })();
+
+
+/**
+ * Highlights (Marks) text
+ * @params:
+ *   id [String] : Identifier of element containing text to be marked (highlighted)
+ */
+function markText(id) {
+  var txt = document.getElementById(id);
+  txt.focus();
+  txt.select();
+  console.log("AA");
+  var copyEvent = new ClipboardEvent('copy');
+  if ( window.clipboardData ) {
+    console.log("window");
+    window.clipboardData.setData("Text", "AAA");
+  }
+  else {
+    console.log("FF");
+    copyEvent.clipboardData.setData("text/plain", "AAA");
+  }
+}
 </script>
 
 <script type="text/javascript">
