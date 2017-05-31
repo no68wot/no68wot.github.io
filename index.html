@@ -24,6 +24,7 @@
     table#tab5gAbbr tr td { padding : 5px; border: 1px solid #000; }
     table#tab5gAbbr tr td:first-child { font-weight: 600; }
   </style>
+  <script type="text/javascript" src="resources/js/codeFormatter4.js"></script>
   <title>Vietnamese Keyboard</title>
 </head>
 <body>
@@ -407,16 +408,16 @@ The table gets a class-attribute with value "tabBib".
 <div class="myEntry">
 <h3>Java : Object Reference und Typecasting</h3>
 <p>Gegeben seien folgende 3 Klassen (A.java, B.java, Main.java):</p>
-<pre class="codeFrame codeFont">
+<pre class="codeBlock java {4,5,6}">
 /* A.java */
 public class A
 {
-  <span style="color:red;">public void print(A a) {
+  public void print(A a) {
     System.out.println("print(a) in A");
-  }</span>
+  }
 }
 </pre>
-<pre class="codeFrame codeFont">
+<pre class="codeBlock java {9,10,11}">
 /* B.java */
 public class B extends A
 {
@@ -425,12 +426,12 @@ public class B extends A
   }
 
   @Override
-  <span style="color:red;">public void print(A a) {
+  public void print(A a) {
     System.out.println("print(a) in B");
-  }</span>
+  }
 }
 </pre>
-<pre class="codeFrame codeFont">
+<pre class="codeBlock java">
 /**
  * Main.java 
  */
@@ -588,39 +589,6 @@ b.print(b) ==> b.print(b : B) ==> b.print(B b) ==> "print(b) in B"
  	    td.appendChild(document.createTextNode("[" + (i+1) + "]"));
 	    vArr[i].insertBefore(td, firstChild);
 	  }
-	}
-	/** Formatting comments in code sections *********************/
-	vArr = document.querySelectorAll("pre.codeFrame") || []; /* NodeList */
-	if ( vArr.length === 0 ) return;
-	var ll = vArr.length; // Number of all existing <pre> containers.
-	var nLines = 0; // Number of lines in every <pre> container.
-	var parentNode = vArr[0].parentNode; // Get reference to parent node.
-	// Iterates the number of <pre> containers
-	for ( var i = 0; i < ll; i++ ) {
-	  var strCode = vArr[i].innerHTML;
-	  // Count the number of line feeds.
-	  nLines = strCode.split(/\r\n|\r|\n/g).length;
-	  if ( nLines > 0 ) {
-	    var tab = document.createElement("TABLE");
-	    for ( var j = 1; j < nLines; j++ ) {
-	      var tr = document.createElement("TR");
-	      var td = document.createElement("TD");
-	      td.appendChild(document.createTextNode(j + "|"));
-	      tr.appendChild(td);
-	      tab.appendChild(tr);
-	    }
-	    tab.setAttribute("class", "codeNum codeFont");
-	    parentNode.insertBefore(tab, vArr[i]);
-	  }
-	  // Regular expression for code comments. Supports: /* */ and //
-	  var strReg = "\/(\\*)[ ]*.*[ ]*(\\*)+\/" // Comment in the kind of /*..*/
-	             + "|\/\/[ ]*.*[\n\r]" // Comment in the kind of: //
-	             + "|\/(\\*)([A-Za-z0-9äöüÄÖÜ_ ]|[^A-Za-z0-9äöüÄÖÜ_ ])*[\n\r\t ]*(\\*)\/";
-	  var re = new RegExp(strReg, "gi");
-	  /* https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/String/replace */
-	  vArr[i].innerHTML = strCode.replace(re, function (match, p, offset, string) { 
-	    return "<span style='color:green;'>" + match + "</span>";
-	  });
 	}
 	/** Release references and unused variables ******************/
 	vTabs = vArr = parentNode = null;
