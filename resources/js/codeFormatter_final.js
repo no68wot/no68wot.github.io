@@ -19,8 +19,8 @@ var Formatter = (function () {
     // RegExp for code comments. Support: /*..*/ and //
     // Escape star sign (*) with double-backslash, i.e. * is like \\*
     reComments    : "//[ ]*.*[ ]*[\r\n]"   // Comments in the kind of //...
-                  + "|/\\*[ ]*.*[ ]*\\*/" // Comments in the kind of /* .. */
-                  + "|/\\*([ ]*.*[ ]*[\r\n])+[ ]*\\*/", // Many lines comments /** .. */
+                  + "|/\\*[ ]*.*[ ]*\\*/" // Comments in the kind of /* .. */,
+                  + "|/\\*([ ]*.*[ ]*(\r?\n|\r)[ ]*\\*)+\\*?/", // Many lines comments /** .. */
     langs         : ["c","java","javascript"], /* Programming Languages */
     reLangs       : { /* RegExp for Programming Languages */
        c          : "(\\b(" + keywords.c    + ")\\b)(?=.*(;|(\r?\n|\r)?{|}))" + "|#include",
@@ -91,6 +91,7 @@ var Formatter = (function () {
         strCode = this.highlight(strCode, g.blocks[i].getAttribute("class"));
         // Returns formatted code
         g.blocks[i].innerHTML = strCode;
+        //if ( i == 2 ) console.log(strCode);
       } // END-for (code blocks)
     }, // format
     /**
@@ -99,7 +100,7 @@ var Formatter = (function () {
      */
     highlight : function (strCode /* string */, strAt /* string attributes */) {
       var arr = strAt.split(" ");
-      var j, k, m, re = nums = lines = null;
+      var j, k, m, x, tmp = re = nums = lines = null;
       if ( arr.length < 2 ) return strCode;
       /* Highlight keywords */
       j = 0;
@@ -115,24 +116,36 @@ var Formatter = (function () {
           return "<span style='color:#FFFF00; font-weight:600; text-shadow:0 1px rgba(110,110,110,.6);'>" + match + "</span>";
         });
       }
-      /* Highlight certain lines */
+      /* Highlight marked lines */
       arr = strAt.match(/{(\d,?)+}/g); // Match any pattern such as: {1}, {2,3}, {4,5,6}
       lines = strCode.split(/\r?\n|\r/g); // Break string into many lines, and store them to array
       if ( !arr || arr.length === 0 ) return strCode; // Array for exmaple {2,3}
       for ( j = 0; j < arr.length; ++j ) {
-        nums = arr[j].substr(1, arr[j].length-2).split(","); // Convert '{2,3}' to array ['2','3']
+        nums = arr[j].substring(1, arr[j].length-1).split(","); // Convert '{2,3}' to array ['2','3']
         if ( !nums || nums.length < 1 ) {
           return strCode;
           break;
         }
+        // ToDo: Sortieren von Array nums ==> nicht mehr noetig ! :)
+        //
         for ( k = 0; k < nums.length; ++k ) {
-          m = parseInt(nums[k])-1;
-          lines[m] = "<span style='background-color:" + g.bgColors[j] + ";'>" + lines[m] + "</span>";
+          m = parseInt(nums[k])-1;          
+          // RegExp pattern: <span style='color:#..;'>/*[line-end] oder <span style='color:#..;'>/** [line-end]
+          //   oder <span style='color:#..;'>[line-start]  *[line-end]
+          //sre = /\/\*\*?\s*$|^\s+\*\s*(?!\/)/g; /* \s equivalent to [ ] = empty space */
+          // Wenn es mit der 1ten Zeile (/**.. oder /*..) des mehrzeiligen Kommentars anfaengt, oder
+          // die Zeile das Muster "<span style='color:#40ff00;'> *" enthaelt, das NICHT VOR "*/" steht.
+          if ( lines[m].search(/\/\*\*?\s*$|^<span style='color:#40ff00;'>\s*(?!\*\/)\*/g) != -1 ) {
+            lines[m] = "<span style='background-color:" + g.bgColors[j] + ";'>" + lines[m] + "</span></span>";
+            lines[m+1] = "<span style='color:#40ff00;'>" + lines[m+1];
+          } else { // andere Faelle, oder letzte Zeile (..*/) des mehrzeiligen Kommentars.
+            lines[m] = "<span style='background-color:" + g.bgColors[j] + ";'>" + lines[m] + "</span>";
+          }
         }
       }
       strCode = lines.join("\r\n");
       // Returns highlighted code
-      arr = re = nums = lines = null;
+      tmp = arr = re = nums = lines = null;
       return strCode;
     } // highlight
   };
