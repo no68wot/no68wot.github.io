@@ -132,7 +132,7 @@ var Formatter = (function () {
           m = parseInt(nums[k])-1;          
           // RegExp pattern: <span style='color:#..;'>/*[line-end] oder <span style='color:#..;'>/** [line-end]
           //   oder <span style='color:#..;'>[line-start]  *[line-end]
-          //sre = /\/\*\*?\s*$|^\s+\*\s*(?!\/)/g; /* \s equivalent to [ ] = empty space */
+          // \s equivalent to [ ] = empty space; x(?!y) ist negated look-ahead von RegExp
           // Wenn es mit der 1ten Zeile (/**.. oder /*..) des mehrzeiligen Kommentars anfaengt, oder
           // die Zeile das Muster "<span style='color:#40ff00;'> *" enthaelt, das NICHT VOR "*/" steht.
           if ( lines[m].search(/\/\*\*?\s*$|^<span style='color:#40ff00;'>\s*(?!\*\/)\*/g) != -1 ) {
